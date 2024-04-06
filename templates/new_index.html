@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- jQuery library -->
+    <script src="//code.jquery.com/jquery-3.1.1.slim.min.js"
+        integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+        crossorigin="anonymous"></script>
+
+    <!-- Tether -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+        integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+
+    <!-- Bootstrap 4 Alpha JS -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="main.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
+
+    <style>
+        /* Style for image containers */
+        .imageContainer {
+            padding: 1%;
+            display: inline-block;
+        }
+
+        .imageContainer img {
+            align: center;
+            width: 280px;
+            height: auto;
+
+            margin-bottom: 3px;
+            /* Add some space between images */
+
+        }
+
+        body {
+            padding-top: 70px;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        #about {
+            padding-top: 25px;
+        }
+
+        #about p {
+            padding-left: 2%;
+        }
+
+        #services {
+            padding-top: 10px;
+        }
+
+        #plantinfo {
+            padding-top: 10px;
+        }
+
+        #contact {
+            padding-top: 10px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        .navbar-nav li {
+            text-align: left;
+            list-style-type: none;
+        }
+
+        nav {
+            border-bottom: #475257 4px solid;
+        }
+
+        h1,
+        h3,
+        h2,
+        h4 {
+            padding-top: 3%;
+            font-family: 'Merriweather', serif;
+
+        }
+
+        h6 {
+            padding-left: 3%;
+            padding-top: 1%;
+        }
+
+        #small-picture {
+            width: 100%;
+        }
+
+        .graph-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .graph {
+            flex: 0 0 calc(50% - 10px);
+            /* Adjust width here */
+            margin-bottom: 20px;
+        }
+    </style>
+    <title>Agrosync</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#getTimerButton').click(function () {
+                var soilMoisture = $('#soilMoistureInput').val();
+                var temperature = $('#temperatureInput').val();
+                var humidity = $('#humidityInput').val();
+
+                $.ajax({
+                    url: '/timer',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        soil_moisture: soilMoisture,
+                        temperature: temperature,
+                        humidity: humidity
+                    }),
+                    success: function (response) {
+                        $('#timerDisplay').text('Timer: ' + response.timer);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <!--Navigation Bar-->
+    <nav class="navbar navbar-toggleable-md navbar-fixed-top navbar-light bg-faded">
+        <div class="container-fluid d-flex">
+            <a class="navbar-brand" href="#" target="_blank">Logo</a>
+            <div class="">
+                <ul class="navbar-nav pull-right">
+                    <!--mt-2 mt-lg-0-->
+
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#plantinfo">Plant Information</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Graphs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#webcam">Camera Feed</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!--Page-->
+    <div class="container-fluid">
+
+
+        <!--Projects Carousel-->
+        <div class="container-fluid">
+
+            <div id="myCarousel" class="carousel slide bg-inverse" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    <div class="carousel-item active">
+
+                        <img class="card-img-top img-fluid" src="https://agro.elzian.com/images/blog-03.png"
+                            alt="Photo of sunset">
+                        <div class="card-block">
+
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+
+                        <img class="card-img-top img-fluid" id="small-picture"
+                            src="https://img.freepik.com/premium-photo/_72572-3230.jpg?size=626&ext=jpg"
+                            alt="Photo of sunset">
+                        <div class="card-block">
+
+                        </div>
+                    </div>
+                    <!-- <div class="carousel-item">
+
+                  <img class="card-img-top img-fluid" src="https://i.ytimg.com/vi/c7oV1T2j5mc/maxresdefault.jpg" alt="Photo of sunset">
+                  <div class="card-block">
+                     <p class="card-text">Slide 3</p>
+                  </div>
+               </div> -->
+                </div>
+                <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+
+
+
+
+        </div>
+        <div id="plantinfo">
+            <h2>Sensor Display</h2>
+            <h1>Real-time Sensor Data Display</h1>
+            <p id="humidity">Loading...</p>
+            <p id="moisture">Loading...</p>
+            <p id="temperature">Loading...</p>
+            <p id="timer">Loading...</p>
+        </div>
+
+        <h2>Plant Information</h2>
+        <h5>Select a Plant:</h5>
+        <select id="plantDropdown">
+            <option value="" disabled selected>Select a plant</option>
+            <option value="onion">Onion</option>
+            <option value="tomato">Tomato</option>
+            <option value="wheat">Wheat</option>
+            <option value="rice">Rice</option>
+        </select>
+        <br><br>
+        <div id="plantMessage"></div>
+
+
+
+        <!--Services-->
+        <div id="services">
+            <div style="display: flex;">
+                <!-- Chart 1: Without Our System -->
+                <div style="margin-right: 20px;">
+                    <h2>Without Our System</h2>
+                    <div>
+                        <label for="monthSelect1">Select Month:</label>
+                        <select id="monthSelect1" onchange="updateChart1(); updateTotalWater1();">
+                            <option value="March">March</option>
+                            <option value="April">April</option>
+                            <option value="May">May</option>
+                            <option value="June">June</option>
+                            <option value="July">July</option>
+                        </select>
+                    </div>
+                    <canvas id="waterUsageChart1" width="400" height="300"></canvas>
+                    <p>Total Water Utilized: <span id="totalWater1">0</span></p>
+                </div>
+
+                <!-- Chart 2: With Our System -->
+                <div>
+                    <h2>With Our System</h2>
+                    <div>
+                        <label for="monthSelect2">Select Month:</label>
+                        <select id="monthSelect2" onchange="updateChart2(); updateTotalWater2();">
+                            <option value="March">March</option>
+                            <option value="April">April</option>
+                            <option value="May">May</option>
+                            <option value="June">June</option>
+                            <option value="July">July</option>
+                        </select>
+                    </div>
+                    <canvas id="waterUsageChart2" width="400" height="300"></canvas>
+                    <p>Total Water Utilized: <span id="totalWater2">0</span></p>
+                </div>
+            </div>
+            <canvas id="waterUsageChart" width="0" height="0"></canvas>
+        </div>
+    </div>
+
+
+    <h2 style="margin-left: 10px;">Yearly graph comparision</h2>
+    <div class="graph-container">
+        <div class="graph">
+            <canvas id="myChart101" width="400" height="400"></canvas>
+        </div>
+        <div class="graph">
+            <canvas id="myChart201" width="400" height="400"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for the graphs
+        var data1 = {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            datasets: [{
+                label: 'Before system implementation.',
+                data: [38, 40, 43, 45, 52, 43, 40, 42, 41, 40, 38, 36],
+                borderColor: 'red',
+                backgroundColor: 'transparent',
+                pointRadius: 5,
+                pointHoverRadius: 10,
+                lineTension: 0
+            }]
+        };
+
+        var data2 = {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            datasets: [{
+                label: 'After system deployment',
+                data: [20, 21, 21, 21.5, 23, 22.2, 19, 17, 18, 18, 17, 17],
+                borderColor: 'green',
+                backgroundColor: 'transparent',
+                pointRadius: 5,
+                pointHoverRadius: 10,
+                lineTension: 0
+            }]
+        };
+
+        // Chart.js configuration
+        var options = {
+            responsive: false,
+            scales: {
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Month'
+                    }
+                },
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Value'
+                    },
+                    suggestedMin: 0, // Set minimum value
+                    suggestedMax: 60 // Set maximum value
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true
+                },
+                tooltip: {
+                    enabled: true,
+                    mode: 'index',
+                    intersect: false
+                }
+            }
+        };
+
+        // Create the graphs
+        var ctx1 = document.getElementById('myChart101').getContext('2d');
+        var myChart101 = new Chart(ctx1, {
+            type: 'line',
+            data: data1,
+            options: options
+        });
+
+        var ctx2 = document.getElementById('myChart201').getContext('2d');
+        var myChart201 = new Chart(ctx2, {
+            type: 'line',
+            data: data2,
+            options: options
+        });
+    </script>
+
+    <!-- <div class="col-md-6">
+            <img class="img-responsive" src="http://file.instiz.net/data/file/20140530/c/3/a/c3a8178c74215d01efa3c685b6c044ee.jpg">
+         </div> -->
+    </div>
+    </div>
+
+    <!--Webcam data-->
+    <div id="webcam" class="tabcontent">
+        <h2 style="margin-left: 10px;">Live camera Feed</h2>
+        <video id="videoElement" width="auto" height="auto" style="margin-left: 10px;" autoplay></video>
+
+    </div>
+
+    <!--About Rus-->
+    <div id="about">
+        <h2 style="margin-left: 10px;">About</h2>
+        <div>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                ex ea commodo consequat. Duis aute
+                irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+    </div>
+    <!--Contact-->
+
+    </div>
+    <div id="contact" class="container-fluid">
+        <h2>Contact</h2>
+        <div class="row">
+            <div class="col-sm-6">
+                <div>
+                    <h6>Phone Number: 98901XXXXX</h6>
+                    <h6>Email: agrosync@gmail.com</h6>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <h6>PICT</h6>
+                <h6>PUNE</h6>
+                <h6>Techfiesta hackathon</h6>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Initialize Bootstrap functionality -->
+    <script>
+        // Initialize tooltip component
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        // Initialize popover component
+        $(function () {
+            $('[data-toggle="popover"]').popover();
+        });
+    </script>
+
+    <script>
+        // Function to fetch sensor data from Flask server
+        function fetchSensorData() {
+            $.getJSON('/sensor_data', function(data) {
+                $('#humidity').text('Current Humidity: ' + data.humidity + '%');
+                $('#moisture').text('Current Moisture: ' + data.moisture + '%');
+                $('#temperature').text('Current Temperature: ' + data.temperature + '°C');
+                if (data.timer > 0) {
+                    $('#timer').text('Pump Timer: ' + data.timer + ' minutes');
+                } else {
+                    $('#timer').text('Pump Timer: Not Active');
+                }
+            });
+        }
+
+        // Call fetchSensorData() initially
+        fetchSensorData();
+
+        // Call fetchSensorData() every 10 seconds
+        setInterval(fetchSensorData, 10); // 10 seconds = 10000 milliseconds
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var plantData = {
+                onion: {
+                    message: 'Onion plant was selected.',
+                    irrigation: 'Drip irrigation is recommended for onions.',
+                    nextCrop: 'Spinach can be planted after onions.'
+                },
+                tomato: {
+                    message: 'Tomato plant was selected.',
+                    irrigation: 'Tomatoes require frequent watering. Drip irrigation is recommended.',
+                    nextCrop: 'Beans can be planted after tomatoes.'
+                },
+                wheat: {
+                    message: 'Wheat plant was selected.',
+                    irrigation: 'Wheat requires regular watering, especially during the tillering stage.',
+                    nextCrop: 'Mustard can be planted after wheat.'
+                },
+                rice: {
+                    message: 'Rice plant was selected.',
+                    irrigation: 'Rice requires flooded fields for cultivation.',
+                    nextCrop: 'Soybean can be planted after rice.'
+                }
+            };
+
+            $('#plantDropdown').change(function () {
+                var selectedPlant = $(this).val();
+                var plantInfo = plantData[selectedPlant];
+                var message = plantInfo ? plantInfo.message : 'Invalid selection.';
+                var irrigation = plantInfo ? plantInfo.irrigation : '';
+                var nextCrop = plantInfo ? plantInfo.nextCrop : '';
+
+                $('#plantMessage').html('<p>' + message + '</p><p>' + irrigation + '</p><p>' + nextCrop + '</p>');
+            });
+        });
+    </script>
+
+    <script>
+        // Define chart data for each month
+        var chartData1 = {
+            March: {
+                labels: ['Mar-01', 'Mar-02', 'Mar-03', 'Mar-04', 'Mar-05', 'Mar-06', 'Mar-07', 'Mar-08', 'Mar-09', 'Mar-10', 'Mar-11', 'Mar-12', 'Mar-13', 'Mar-14', 'Mar-15', 'Mar-16', 'Mar-17', 'Mar-18', 'Mar-19', 'Mar-20', 'Mar-21', 'Mar-22', 'Mar-23', 'Mar-24', 'Mar-25', 'Mar-26', 'Mar-27', 'Mar-28', 'Mar-29', 'Mar-30', 'Mar-31'],
+                data: [18234, 18945, 20567, 16981, 17788, 19876, 16892, 18345, 20123, 16340, 17245, 19567, 16456, 17345, 20345, 16789, 17945, 20876, 16394, 17567, 20678, 16543, 18123, 20765, 16456, 17345, 21000, 16078, 17654, 20345, 16013]
+            },
+            April: {
+                labels: ['Apr-01', 'Apr-02', 'Apr-03', 'Apr-04', 'Apr-05', 'Apr-06', 'Apr-07', 'Apr-08', 'Apr-09', 'Apr-10', 'Apr-11', 'Apr-12', 'Apr-13', 'Apr-14', 'Apr-15', 'Apr-16', 'Apr-17', 'Apr-18', 'Apr-19', 'Apr-20', 'Apr-21', 'Apr-22', 'Apr-23', 'Apr-24', 'Apr-25', 'Apr-26', 'Apr-27', 'Apr-28', 'Apr-29', 'Apr-30'],
+                data: [27456, 26019, 29430, 25092, 28341, 26875, 24891, 29102, 27904, 26277, 25580, 29789, 24850, 28567, 29345, 26783, 24894, 27856, 26098, 28877, 25101, 29456, 27765, 24321, 28567, 26143, 29700, 27435, 25122, 28210]
+            },
+            May: {
+                labels: ['May-01', 'May-02', 'May-03', 'May-04', 'May-05', 'May-06', 'May-07', 'May-08', 'May-09', 'May-10', 'May-11', 'May-12', 'May-13', 'May-14', 'May-15', 'May-16', 'May-17', 'May-18', 'May-19', 'May-20', 'May-21', 'May-22', 'May-23', 'May-24', 'May-25', 'May-26', 'May-27', 'May-28', 'May-29', 'May-30', 'May-31'],
+                data: [22670, 21583, 19972, 21345, 22110, 22789, 20234, 23567, 20876, 21780, 23345, 19876, 22590, 24123, 22345, 20987, 24600, 21456, 23900, 20345, 22890, 22000, 19678, 23700, 24500, 20456, 21890, 22800, 19765, 23987, 19600]
+            },
+            June: {
+                labels: ['Jun-01', 'Jun-02', 'Jun-03', 'Jun-04', 'Jun-05', 'Jun-06', 'Jun-07', 'Jun-08', 'Jun-09', 'Jun-10', 'Jun-11', 'Jun-12', 'Jun-13', 'Jun-14', 'Jun-15', 'Jun-16', 'Jun-17', 'Jun-18', 'Jun-19', 'Jun-20', 'Jun-21', 'Jun-22', 'Jun-23', 'Jun-24', 'Jun-25', 'Jun-26', 'Jun-27', 'Jun-28', 'Jun-29', 'Jun-30'],
+                data: [18456, 20123, 19567, 21900, 17654, 20345, 18567, 21000, 17789, 22123, 18900, 21678, 17345, 22567, 17900, 21345, 17123, 22000, 18654, 22800, 18123, 22500, 17500, 23000, 17890, 22600, 18234, 22780, 17000, 22456]
+            },
+            July: {
+                labels: ['Jul-01', 'Jul-02', 'Jul-03', 'Jul-04', 'Jul-05', 'Jul-06', 'Jul-07', 'Jul-08', 'Jul-09', 'Jul-10', 'Jul-11', 'Jul-12', 'Jul-13', 'Jul-14', 'Jul-15', 'Jul-16', 'Jul-17', 'Jul-18', 'Jul-19', 'Jul-20', 'Jul-21', 'Jul-22', 'Jul-23', 'Jul-24', 'Jul-25', 'Jul-26', 'Jul-27', 'Jul-28', 'Jul-29', 'Jul-30', 'Jul-31'],
+                data: [15800, 16345, 14200, 15678, 16890, 14900, 17345, 14600, 17900, 14123, 18456, 14789, 18600, 14300, 19123, 14567, 19400, 14890, 19600, 15234, 19800, 15456, 20000, 15789, 14000, 16234, 14256, 16678, 14456, 17234, 15000]
+            }
+        };
+
+        // Define chart data for each month
+        var chartData2 = {
+            March: {
+                labels: ['Mar-01', 'Mar-02', 'Mar-03', 'Mar-04', 'Mar-05', 'Mar-06', 'Mar-07', 'Mar-08', 'Mar-09', 'Mar-10', 'Mar-11', 'Mar-12', 'Mar-13', 'Mar-14', 'Mar-15', 'Mar-16', 'Mar-17', 'Mar-18', 'Mar-19', 'Mar-20', 'Mar-21', 'Mar-22', 'Mar-23', 'Mar-24', 'Mar-25', 'Mar-26', 'Mar-27', 'Mar-28', 'Mar-29', 'Mar-30', 'Mar-31'],
+                data: Array.from({ length: 31 }, () => randomNumber(16000, 17000))
+            },
+            April: {
+                labels: ['Apr-01', 'Apr-02', 'Apr-03', 'Apr-04', 'Apr-05', 'Apr-06', 'Apr-07', 'Apr-08', 'Apr-09', 'Apr-10', 'Apr-11', 'Apr-12', 'Apr-13', 'Apr-14', 'Apr-15', 'Apr-16', 'Apr-17', 'Apr-18', 'Apr-19', 'Apr-20', 'Apr-21', 'Apr-22', 'Apr-23', 'Apr-24', 'Apr-25', 'Apr-26', 'Apr-27', 'Apr-28', 'Apr-29', 'Apr-30'],
+                data: Array.from({ length: 30 }, () => randomNumber(24000, 25000))
+            },
+            May: {
+                labels: ['May-01', 'May-02', 'May-03', 'May-04', 'May-05', 'May-06', 'May-07', 'May-08', 'May-09', 'May-10', 'May-11', 'May-12', 'May-13', 'May-14', 'May-15', 'May-16', 'May-17', 'May-18', 'May-19', 'May-20', 'May-21', 'May-22', 'May-23', 'May-24', 'May-25', 'May-26', 'May-27', 'May-28', 'May-29', 'May-30', 'May-31'],
+                data: Array.from({ length: 31 }, () => randomNumber(19600, 21500))
+            },
+            June: {
+                labels: ['Jun-01', 'Jun-02', 'Jun-03', 'Jun-04', 'Jun-05', 'Jun-06', 'Jun-07', 'Jun-08', 'Jun-09', 'Jun-10', 'Jun-11', 'Jun-12', 'Jun-13', 'Jun-14', 'Jun-15', 'Jun-16', 'Jun-17', 'Jun-18', 'Jun-19', 'Jun-20', 'Jun-21', 'Jun-22', 'Jun-23', 'Jun-24', 'Jun-25', 'Jun-26', 'Jun-27', 'Jun-28', 'Jun-29', 'Jun-30'],
+                data: Array.from({ length: 30 }, () => randomNumber(17000, 18000))
+            },
+            July: {
+                labels: ['Jul-01', 'Jul-02', 'Jul-03', 'Jul-04', 'Jul-05', 'Jul-06', 'Jul-07', 'Jul-08', 'Jul-09', 'Jul-10', 'Jul-11', 'Jul-12', 'Jul-13', 'Jul-14', 'Jul-15', 'Jul-16', 'Jul-17', 'Jul-18', 'Jul-19', 'Jul-20', 'Jul-21', 'Jul-22', 'Jul-23', 'Jul-24', 'Jul-25', 'Jul-26', 'Jul-27', 'Jul-28', 'Jul-29', 'Jul-30', 'Jul-31'],
+                data: Array.from({ length: 31 }, () => randomNumber(14000, 15000))
+            }
+        };
+
+        // Function to generate random number within a range
+        function randomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // Default to March data
+        var selectedMonth1 = 'March';
+        var selectedMonth2 = 'March';
+
+        // Chart 1: Without Our System
+        var ctx1 = document.getElementById('waterUsageChart1').getContext('2d');
+        var myChart1 = new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: chartData1[selectedMonth1].labels,
+                datasets: [{
+                    label: 'Water Usage',
+                    data: chartData1[selectedMonth1].data,
+                    borderColor: 'rgb(255, 0, 0)',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Chart 2: With Our System
+        var ctx2 = document.getElementById('waterUsageChart2').getContext('2d');
+        var myChart2 = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: chartData2[selectedMonth2].labels,
+                datasets: [{
+                    label: 'Water Usage',
+                    data: chartData2[selectedMonth2].data,
+                    borderColor: 'rgb(0, 255, 0)',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Function to update Chart 1 based on selected month
+        function updateChart1() {
+            var select1 = document.getElementById('monthSelect1');
+            selectedMonth1 = select1.options[select1.selectedIndex].value;
+
+            // Update chart data
+            myChart1.data.labels = chartData1[selectedMonth1].labels;
+            myChart1.data.datasets[0].data = chartData1[selectedMonth1].data;
+            myChart1.update();
+        }
+
+        // Function to update Chart 2 based on selected month
+        function updateChart2() {
+            var select2 = document.getElementById('monthSelect2');
+            selectedMonth2 = select2.options[select2.selectedIndex].value;
+
+            // Update chart data
+            myChart2.data.labels = chartData2[selectedMonth2].labels;
+            myChart2.data.datasets[0].data = chartData2[selectedMonth2].data;
+            myChart2.update();
+        }
+        // Function to update total water utilized for Chart 1
+        function updateTotalWater1() {
+            var select1 = document.getElementById('monthSelect1');
+            selectedMonth1 = select1.options[select1.selectedIndex].value;
+
+            var totalWater1 = chartData1[selectedMonth1].data.reduce((a, b) => a + b, 0);
+            document.getElementById('totalWater1').innerText = totalWater1;
+        }
+
+        // Function to update total water utilized for Chart 2
+        function updateTotalWater2() {
+            var select2 = document.getElementById('monthSelect2');
+            selectedMonth2 = select2.options[select2.selectedIndex].value;
+
+            var totalWater2 = chartData2[selectedMonth2].data.reduce((a, b) => a + b, 0);
+            document.getElementById('totalWater2').innerText = totalWater2;
+        }
+    </script>
+
+    <script>
+        // Get the video element
+        var video = document.getElementById('videoElement');
+
+        // Check if getUserMedia is supported by the browser
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            // Get user media (in this case, video)
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                    // Set the video stream as the source for the video element
+                    video.srcObject = stream;
+                    // Play the video
+                    video.play();
+                })
+                .catch(function (err) {
+                    // Handle errors
+                    console.error('Error accessing the webcam:', err);
+                });
+        } else {
+            console.error('getUserMedia is not supported by this browser');
+        }
+    </script>
+
+
+</body>

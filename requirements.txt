@@ -1,0 +1,4 @@
+requests==2.26.0
+onnxruntime==1.9.0
+numpy==1.21.5
+Flask==2.0.2

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Sensor Data Display</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Real-time Sensor Data Display</h1>
+    <p id="humidity">Loading...</p>
+    <p id="moisture">Loading...</p>
+    <p id="temperature">Loading...</p>
+    <p id="timer">Loading...</p>
+
+    <script>
+        // Function to fetch sensor data from Flask server
+        function fetchSensorData() {
+            $.getJSON('/sensor_data', function(data) {
+                $('#humidity').text('Current Humidity: ' + data.humidity + '%');
+                $('#moisture').text('Current Moisture: ' + data.moisture + '%');
+                $('#temperature').text('Current Temperature: ' + data.temperature + '°C');
+                if (data.timer > 0) {
+                    $('#timer').text('Pump Timer: ' + data.timer + ' minutes');
+                } else {
+                    $('#timer').text('Pump Timer: Not Active');
+                }
+            });
+        }
+
+        // Call fetchSensorData() initially
+        fetchSensorData();
+
+        // Call fetchSensorData() every 10 seconds
+        setInterval(fetchSensorData, 10); // 10 seconds = 10000 milliseconds
+    </script>
+</body>
+</html>
+
