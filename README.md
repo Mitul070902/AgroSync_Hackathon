@@ -1,3 +1,5 @@
+Precision Irrigation Optimization
+
 Escalating food demands necessitate sustainable agriculture that optimizes resources. Water scarcity poses a major challenge. This project proposes a smart irrigation system leveraging sensor data, machine learning (ML), and robust hardware. It aims to minimize water use while maximizing crop yield by dynamically adapting irrigation to each farm's unique environment.
 
 Two ESP32 microcontrollers form the core. One resides at the farm with a camera, while the other, with internet access, resides at the farmer's location. LoRaWAN, a long-range, low-power communication protocol, bridges potential internet gaps at the farm, ensuring efficient data exchange.
